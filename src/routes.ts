@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import CoinConvert from './domains/coin-convert';
+import CoinConvert from './domains/currency';
 
 const router = Router();
 
