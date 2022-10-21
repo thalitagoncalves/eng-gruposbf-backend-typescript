@@ -1,31 +1,37 @@
 import { curry } from 'ramda';
+import { Response } from 'express';
+
 import Logger from '../../utils/logger';
 import GetQuotation from './ports/coins-api/index';
+import currencies from '../../config/currencies';
 
 import { CurrencyResponse } from './types';
+import { IQuotationApiResponse } from './ports/coins-api/types';
 
 interface Input {
   amount: string
 }
 
+const codes = Object.keys(currencies);
+
 async function convert(
   GetQuotationPort: typeof GetQuotation,
   LoggerPort: typeof Logger,
-  res: any,
+  res: Response,
   input: Input,
 ) {
-  const coinCodes = ['EUR', 'USD', 'INR'];
+  const numberAmount = Number(input.amount);
 
   try {
-    const quotations = await GetQuotationPort(coinCodes);
+    const quotations = await GetQuotationPort();
     const response: CurrencyResponse = {};
 
-    coinCodes.forEach((coinCode) => {
-      const parseCurrency = `${coinCode}BRL`;
+    codes.forEach((currencyCode) => {
+      const parseCurrency = `${currencyCode}BRL`;
       const { code } = quotations[parseCurrency];
 
       const currencyValue = Number(quotations[parseCurrency].high);
-      const conversion = (Number(input.amount) / currencyValue).toFixed(2);
+      const conversion = (numberAmount / currencyValue).toFixed(2);
 
       response[code] = conversion;
     });
@@ -42,7 +48,7 @@ async function convert(
   } catch (error) {
     LoggerPort.error(error);
 
-    return res.status(404).send({
+    return res.status(400).send({
       error: error.message,
     });
   }
