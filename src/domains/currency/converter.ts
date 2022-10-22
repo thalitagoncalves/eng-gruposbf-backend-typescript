@@ -1,51 +1,40 @@
 import { curry } from 'ramda';
-import Logger from '../../utils/logger';
-import GetQuotation from './ports/coins-api/index';
 
-import { CurrencyResponse } from './types';
+import GetQuotation from './ports/coins-api/index';
+import currencies from '../../config/currencies';
+
+import { CurrencyResponse } from './types/types';
+import { IQuotationApiResponse } from './ports/coins-api/types';
 
 interface Input {
   amount: string
 }
 
-async function convert(
-  GetQuotationPort: typeof GetQuotation,
-  LoggerPort: typeof Logger,
-  res: any,
-  input: Input,
-) {
-  const coinCodes = ['EUR', 'USD', 'INR'];
+const codes = Object.keys(currencies);
 
-  try {
-    const quotations = await GetQuotationPort(coinCodes);
-    const response: CurrencyResponse = {};
+function getRates(quotations: IQuotationApiResponse, input: Input): CurrencyResponse {
+  const rates: CurrencyResponse = {};
 
-    coinCodes.forEach((coinCode) => {
-      const parseCurrency = `${coinCode}BRL`;
-      const { code } = quotations[parseCurrency];
+  const numberAmount = Number(input.amount);
 
-      const currencyValue = Number(quotations[parseCurrency].high);
-      const conversion = (Number(input.amount) / currencyValue).toFixed(2);
+  codes.forEach((currencyCode) => {
+    const parseCurrency = `${currencyCode}BRL`;
+    const { code } = quotations[parseCurrency];
 
-      response[code] = conversion;
-    });
+    const currencyValue = Number(quotations[parseCurrency].high);
+    const conversion = (numberAmount / currencyValue).toFixed(2);
 
-    LoggerPort.info({
-      message: 'Conversion successfully',
-      amount: input.amount,
-      conversion: response,
-    });
+    rates[code] = conversion;
+  });
 
-    return res.status(200).send({
-      data: response,
-    });
-  } catch (error) {
-    LoggerPort.error(error);
+  return rates;
+}
 
-    return res.status(404).send({
-      error: error.message,
-    });
-  }
+async function convert(GetQuotationPort: typeof GetQuotation, input: Input) {
+  const quotations = await GetQuotationPort();
+  const rates = getRates(quotations, input);
+
+  return rates;
 }
 
 export default curry(convert);
