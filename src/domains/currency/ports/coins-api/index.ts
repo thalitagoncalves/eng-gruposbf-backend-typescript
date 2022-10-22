@@ -1,11 +1,14 @@
 import axios from 'axios';
-// import logger from '../../../../utils/logger';
+import currencies from '../../../../config/currencies';
+
 import { IQuotationApiResponse } from './types';
 
-const getQuotation = async (coins: string[]): Promise<IQuotationApiResponse | null> => {
-  const pairs = coins.map((coin) => `${coin}-BRL`);
+const currenciesCodes = Object.keys(currencies);
+const pairs = currenciesCodes.map((coin) => `${coin}-BRL`);
+
+const getQuotation = async (): Promise<IQuotationApiResponse | null> => {
   try {
-    const response = await axios.get(`${process.env.URL}/last/${pairs}`);
+    const response = await axios.get(`${process.env.URL}/last/${pairs}-BRL`);
     return response.data;
   } catch (error) {
     return error;
