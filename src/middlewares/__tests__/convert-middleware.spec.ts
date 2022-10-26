@@ -1,41 +1,18 @@
-import convertMiddleware from '../convertMiddleware';
-
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
-jest.mock('../middleware');
-
-const mockConverterMiddleware = convertMiddleware as jest.Mock<any>;
-
-const createReq = (extra: any) => {
-  const req = {
-    params: {},
-    ...extra,
-  };
-  return req;
-};
-
-const createRes = () => {
-  const res: any = {
-    status: jest.fn(() => res),
-    send: jest.fn(() => res),
-  };
-  return res;
-};
-
-const FakeNext = jest.fn();
+import request from 'supertest';
+import app from '../../app';
 
 describe('Converter Middleware', () => {
-  it('should return an error when amount value is not a number', () => {
-    const FakeAmount = 'notNumeric';
+  it('should return an error when amount value is not a number', async () => {
+    const response = await request(app).get('/convert/notNumeric');
 
-    const FakeReq = createReq({ params: FakeAmount });
-    const FakeRes = createRes();
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('"Amount" value should be a number');
+  });
 
-    convertMiddleware(FakeReq, FakeRes, FakeNext);
+  it('should return an error when amount value is less than or equal to zero', async () => {
+    const response = await request(app).get('/convert/0');
 
-    expect(mockConverterMiddleware).toHaveBeenCalledTimes(1);
-    expect(mockConverterMiddleware).toHaveBeenCalledWith(FakeReq, FakeRes, FakeNext);
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('"Amount" value must be greater than 0');
   });
 });
