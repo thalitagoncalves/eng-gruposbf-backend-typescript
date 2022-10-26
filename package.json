@@ -29,7 +29,8 @@
     "express": "^4.18.2",
     "mock-express-response": "^0.3.0",
     "pino": "^8.6.1",
-    "ramda": "^0.28.0"
+    "ramda": "^0.28.0",
+    "supertest": "^6.3.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -37,6 +38,7 @@
     "@types/jest": "^29.2.0",
     "@types/node": "^18.8.4",
     "@types/ramda": "^0.28.16",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",
