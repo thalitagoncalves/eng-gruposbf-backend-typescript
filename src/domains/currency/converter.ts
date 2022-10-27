@@ -1,10 +1,10 @@
 import { curry } from 'ramda';
 
-import GetQuotation from './ports/coins-api/index';
+import GetQuotation from '../../ports/coins-api/index';
 import currencies from '../../config/currencies';
 
 import { CurrencyResponse } from './types/types';
-import { IQuotationApiResponse } from './ports/coins-api/types';
+import { IQuotationApiResponse } from '../../ports/coins-api/types';
 
 interface Input {
   amount: string
