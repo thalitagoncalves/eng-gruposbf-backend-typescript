@@ -11,4 +11,8 @@ app.use(express.urlencoded({
 
 app.use('/', router);
 
+app.use((req, res) => {
+  res.status(404).send('Route not found');
+});
+
 export default app;
