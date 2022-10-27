@@ -1,5 +1,5 @@
 import axios from 'axios';
-import currencies from '../../../../config/currencies';
+import currencies from '../../config/currencies';
 
 import { IQuotationApiResponse } from './types';
 
