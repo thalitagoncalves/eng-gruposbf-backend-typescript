@@ -1,13 +1,12 @@
 {
   "name": "coin-convert",
   "version": "1.0.0",
-  "description": "Coin convert for SBF test",
+  "description": "Coin converter for SBF test",
   "main": "index.js",
   "scripts": {
     "start": "node ./build/index.js",
     "build": "tsc",
     "dev": "ts-node-dev ./src/index.ts",
-    "migrations": "tsc && node ./build/database/migrations/Migrations.js",
     "test": "jest"
   },
   "repository": {
