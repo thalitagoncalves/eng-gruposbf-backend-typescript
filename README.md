@@ -88,6 +88,11 @@ Como foi utilizada a versão de teste do Datadog, o monitoramento só estará no
 
  Caso este teste não seja revisado até essa data, segue imagens do monitoramento:
 
+ ![SuccessLogs](assets/success.png)
+ ![NotNumericValue](assets/notNumericValue.png)
+ ![InvalidValue](assets/invalidValue.png)
+
+
  ## Tecnologias Utilizadas
  - Typescript
 - Express
