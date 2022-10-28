@@ -55,7 +55,7 @@ Foram feitos testes unitários e testes de integração nessa aplicação. Para 
 
 #### Lint
 Foi utilizado Airbnb Style Guide (+ESLint) para o Linter da aplicação.
-Rode o comando npm run eslint para verificar
+Rode o comando ```npm run eslint``` para verificar
 
 
 ## Ambiente de Produção
